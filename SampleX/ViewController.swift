@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     }
     @IBOutlet weak var otherLabel: UILabel!
 
+    private var previousData: String = ""
+
     private var queue: dispatch_queue_t!
     private var timer: dispatch_source_t!
 
@@ -61,8 +63,8 @@ class ViewController: UIViewController {
     private func updateModelOfOtherProcess() {
         assert(NSThread.mainThread() != NSThread.currentThread())
 
-        if let otherpb = UIPasteboard(name: otherID, create: false), s = otherpb.string where !s.isEmpty {
-            otherpb.string = ""
+        if let otherpb = UIPasteboard(name: otherID, create: false), s = otherpb.string where s != previousData {
+            previousData = s
 
             let ss = s.componentsSeparatedByString(",")
             switch (ss[0], ss.count) {
